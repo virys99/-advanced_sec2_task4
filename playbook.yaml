@@ -1,0 +1,18 @@
+---
+- name: Install nginx
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.yaml
+  roles:
+    - role: geerlingguy.nginx
+      vars:
+        nginx_vhosts:
+          - listen: "8080 default_server"
+            server_name: _
+            root: "/var/www/html"
+            index: "index.html index.htm index.nginx-debian.html"
+            extra_parameters: |
+              location / {
+                try_files $uri $uri/ =404;
+              }
